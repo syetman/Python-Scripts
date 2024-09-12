@@ -1,3 +1,9 @@
+# Created: 2024-09-12
+# Last Modified: 2024-09-12
+# Author: Shaun Yetman
+# Description: Search local Windows machine for Chrome extensions
+# Returns: str of the extension name and version
+
 import os
 import json
 
@@ -5,10 +11,28 @@ import json
 base_path = os.path.expanduser(r'~\AppData\Local\Google\Chrome\User Data\Default\Extensions')
 
 def check_folder_length(base_path):
+    """
+    Check for folders in the given path that have a length of 32 characters.
+
+    Args:
+    base_path (str): The base directory path to search in.
+
+    Returns:
+    list: A list of full paths to folders that have a length of 32 characters.
+    """
     return [os.path.join(base_path, folder) for folder in os.listdir(base_path)
             if os.path.isdir(os.path.join(base_path, folder)) and len(folder) == 32]
 
 def get_manifest_file_path(folder_path):
+    """
+    Find all JSON files in the subfolders of the given folder path.
+
+    Args:
+    folder_path (str): The path to the folder to search in.
+
+    Returns:
+    list: A list of full paths to JSON files found in the subfolders.
+    """
     manifest_paths = []
     for subfolder in os.listdir(folder_path):
         subfolder_path = os.path.join(folder_path, subfolder)
@@ -19,6 +43,16 @@ def get_manifest_file_path(folder_path):
     return manifest_paths
 
 def find_in_json(data, key):
+    """
+    Recursively search for a key in a JSON-like data structure.
+
+    Args:
+    data (dict or list): The JSON-like data structure to search in.
+    key (str): The key to search for.
+
+    Returns:
+    list: A list of values associated with the given key.
+    """
     results = []
     
     def recursive_search(item):
